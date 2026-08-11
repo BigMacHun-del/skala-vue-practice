@@ -13,6 +13,14 @@ import VueBindShorthand from './components/VueBindShorthand.vue'
 import VueIf from './components/VueIf.vue'
 import VueFor from './components/VueFor.vue'
 import VueShow from './components/VueShow.vue'
+import VuePre from './components/VuePre.vue'
+import VueCloak from './components/VueCloak.vue'
+import VueOnce from './components/VueOnce.vue'
+import VueMemo from './components/VueMemo.vue'
+import EventBasic from './components/EventBasic.vue'
+import EventObject from './components/EventObject.vue'
+import EventModifier from './components/EventModifier.vue'
+
 </script>
 
 <template>
@@ -38,8 +46,21 @@ import VueShow from './components/VueShow.vue'
         <VueIf />
         <VueFor />
         <VueShow />
+        <VuePre />
+        <VueCloak />
+        <VueOnce />
+        <VueMemo />
       </section>
 
+      <hr />
+
+      <h1>3. Vue Event</h1>
+      <hr>
+      <section class="directive-list">
+        <EventBasic />
+        <EventObject />
+        <EventModifier />
+      </section>
       <hr />
 
       <nav>
