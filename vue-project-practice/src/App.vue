@@ -10,7 +10,9 @@ import VueBind from './components/VueBind.vue'
 import VueBindClass from './components/VueBindClass.vue'
 import VueBindStyle from './components/VueBindStyle.vue'
 import VueBindShorthand from './components/VueBindShorthand.vue'
-
+import VueIf from './components/VueIf.vue'
+import VueFor from './components/VueFor.vue'
+import VueShow from './components/VueShow.vue'
 </script>
 
 <template>
@@ -21,15 +23,24 @@ import VueBindShorthand from './components/VueBindShorthand.vue'
       <HelloWorld msg="넌 할 수 있어!" />
       <SampleOne />
       <SampleTwo />
+
       <h1>2. Vue Directive</h1>
       <hr />
-      <VueHtml />
-      <VueHtmlXss />
-      <VueText />
-      <VueBind />
-      <VueBindClass />
-      <VueBindStyle />
-      <VueBindShorthand />
+
+      <section class="directive-list">
+        <VueHtml />
+        <VueHtmlXss />
+        <VueText />
+        <VueBind />
+        <VueBindClass />
+        <VueBindStyle />
+        <VueBindShorthand />
+        <VueIf />
+        <VueFor />
+        <VueShow />
+      </section>
+
+      <hr />
 
       <nav>
         <RouterLink to="/">Home</RouterLink>
@@ -45,11 +56,37 @@ import VueBindShorthand from './components/VueBindShorthand.vue'
 header {
   line-height: 1.5;
   max-height: 100vh;
+  overflow-y: auto;
 }
 
 .logo {
   display: block;
   margin: 0 auto 2rem;
+}
+
+h1 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 1.5rem 0 0.5rem;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: 1.5rem 0;
+}
+
+.directive-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.directive-list > * {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-background-soft);
 }
 
 nav {
