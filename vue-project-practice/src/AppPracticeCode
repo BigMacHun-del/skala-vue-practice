@@ -1,4 +1,4 @@
-<!-- <script setup>
+<script setup>
 import { RouterLink, RouterView } from 'vue-router' //외부 컴포넌트
 import HelloWorld from './components/practice/HelloWorld.vue/index.js'
 import SampleOne from './components/practice/SampleOne.vue/index.js'
@@ -175,4 +175,4 @@ nav a:first-of-type {
     margin-top: 1rem;
   }
 }
-</style> -->
+</style>
