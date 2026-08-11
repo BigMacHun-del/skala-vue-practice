@@ -4,7 +4,7 @@ import WeatherMockup from './components/task/WeatherMockup.vue'
 
 <template>
   <div class="app-container">
-    <h1>⛅ 과제 1: 날씨 (Mockup)</h1>
+    <h1>과제 1: 날씨 (Mockup)</h1>
     <hr />
     <WeatherMockup />
   </div>
