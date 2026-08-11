@@ -1,25 +1,29 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router' //외부 컴포넌트
-import HelloWorld from './components/HelloWorld.vue'
-import SampleOne from './components/SampleOne.vue'
-import SampleTwo from './components/SampleTwo.vue'
-import VueHtml from './components/VueHtml.vue'
-import VueHtmlXss from './components/VueHtmlXss.vue'
-import VueText from './components/VueText.vue'
-import VueBind from './components/VueBind.vue'
-import VueBindClass from './components/VueBindClass.vue'
-import VueBindStyle from './components/VueBindStyle.vue'
-import VueBindShorthand from './components/VueBindShorthand.vue'
-import VueIf from './components/VueIf.vue'
-import VueFor from './components/VueFor.vue'
-import VueShow from './components/VueShow.vue'
-import VuePre from './components/VuePre.vue'
-import VueCloak from './components/VueCloak.vue'
-import VueOnce from './components/VueOnce.vue'
-import VueMemo from './components/VueMemo.vue'
-import EventBasic from './components/EventBasic.vue'
-import EventObject from './components/EventObject.vue'
-import EventModifier from './components/EventModifier.vue'
+import HelloWorld from './components/practice/HelloWorld.vue/index.js'
+import SampleOne from './components/practice/SampleOne.vue/index.js'
+import SampleTwo from './components/practice/SampleTwo.vue/index.js'
+import VueHtml from './components/practice/VueHtml.vue/index.js'
+import VueHtmlXss from './components/practice/VueHtmlXss.vue/index.js'
+import VueText from './components/practice/VueText.vue/index.js'
+import VueBind from './components/practice/VueBind.vue/index.js'
+import VueBindClass from './components/practice/VueBindClass.vue/index.js'
+import VueBindStyle from './components/practice/VueBindStyle.vue/index.js'
+import VueBindShorthand from './components/practice/VueBindShorthand.vue/index.js'
+import VueIf from './components/practice/VueIf.vue/index.js'
+import VueFor from './components/practice/VueFor.vue/index.js'
+import VueShow from './components/practice/VueShow.vue/index.js'
+import VuePre from './components/practice/VuePre.vue/index.js'
+import VueCloak from './components/practice/VueCloak.vue/index.js'
+import VueOnce from './components/practice/VueOnce.vue/index.js'
+import VueMemo from './components/practice/VueMemo.vue/index.js'
+import EventBasic from './components/practice/EventBasic.vue/index.js'
+import EventObject from './components/practice/EventObject.vue/index.js'
+import EventModifier from './components/practice/EventModifier.vue/index.js'
+import ModelBasic from './components/practice/ModelBasic.vue/index.js'
+import ModelForm from './components/practice/ModelForm.vue/index.js'
+import ModelModifier from './components/practice/ModelModifier.vue/index.js'
+import VueScoped from './components/practice/VueScoped.vue/index.js'
 
 </script>
 
@@ -63,6 +67,17 @@ import EventModifier from './components/EventModifier.vue'
       </section>
       <hr />
 
+      <h1>4. Vue Model & Vue Style</h1>
+      <hr>
+      <section class="directive-list">
+        <ModelBasic />
+        <ModelForm />
+        <ModelModifier />
+        <VueScoped />
+
+      </section>
+      <hr />
+
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
@@ -76,7 +91,6 @@ import EventModifier from './components/EventModifier.vue'
 <style scoped>
 header {
   line-height: 1.5;
-  max-height: 100vh;
   overflow-y: auto;
 }
 
