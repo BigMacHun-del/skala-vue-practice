@@ -1,5 +1,6 @@
 <script setup>
 import WeatherMockup from './components/task/WeatherMockup.vue'
+import WeatherComposition from './components/task/WeatherComposition.vue'
 </script>
 
 <template>
@@ -7,6 +8,11 @@ import WeatherMockup from './components/task/WeatherMockup.vue'
     <h1>과제 1: 날씨 (Mockup)</h1>
     <hr />
     <WeatherMockup />
+  </div>
+  <div class="app-container">
+    <h1>과제 2: 날씨 (컴포지션)</h1>
+    <hr />
+    <WeatherComposition />
   </div>
 </template>
 
