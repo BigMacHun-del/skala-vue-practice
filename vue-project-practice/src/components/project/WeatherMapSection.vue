@@ -6,6 +6,8 @@ defineProps({
   selectedCityId: { type: String, default: null },
   provincePaths: { type: Array, required: true },
   legendItems: { type: Array, required: true },
+  // 검색 중일 때만 Set이 내려오고, 그 안에 없는 도시 핀은 옅게 표시한다 (검색 결과 강조)
+  highlightIds: { type: Set, default: null },
 })
 
 // emits: 핀 클릭 시 selectedCityId를 직접 바꾸지 않고 부모에게 "이 도시 골랐어요" 알림만 보냄
@@ -33,7 +35,7 @@ const PARTICLE_SLOTS = [0, 1, 2, 3, 4]
       v-for="city in cityList"
       :key="city.id"
       class="map-pin"
-      :class="{ selected: city.id === selectedCityId }"
+      :class="{ selected: city.id === selectedCityId, dimmed: highlightIds && !highlightIds.has(city.id) }"
       :style="{ left: city.x + '%', top: city.y + '%' }"
       @click="$emit('select-city', city.id)"
     >
@@ -96,6 +98,12 @@ const PARTICLE_SLOTS = [0, 1, 2, 3, 4]
   background: transparent;
   cursor: pointer;
   padding: 0;
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+.map-pin.dimmed {
+  opacity: 0.25;
 }
 
 .pin-dot {

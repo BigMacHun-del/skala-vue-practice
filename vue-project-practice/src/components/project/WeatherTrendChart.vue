@@ -8,7 +8,9 @@ const props = defineProps({
   daily: { type: Array, required: true }, // [{ date, max, min, precipitationSum }, ...]
 })
 
-const CHART = { width: 320, height: 170, padLeft: 10, padRight: 10, padTop: 18, padBottom: 30 }
+// 컨테이너 너비(대략 800px 안팎)에 가깝게 잡아야 preserveAspectRatio가 실제 카드 비율과 맞아서
+// 막대/점이 가로로 눌려 늘어나는 왜곡 없이 그려진다.
+const CHART = { width: 800, height: 200, padLeft: 30, padRight: 30, padTop: 24, padBottom: 40 }
 const plotWidth = CHART.width - CHART.padLeft - CHART.padRight
 const plotHeight = CHART.height - CHART.padTop - CHART.padBottom
 
@@ -34,7 +36,8 @@ const minLinePoints = computed(() => props.daily.map((d, i) => `${xForIndex(i, p
 
 // 강수량 막대: 하루 강수량을 차트 하단의 얕은 막대로 표시 (배경 참고용)
 const maxPrecip = computed(() => Math.max(...props.daily.map((d) => d.precipitationSum ?? 0), 1))
-const precipBarHeight = 22
+const precipBarHeight = 34
+const precipBarWidth = 28
 
 const dayLabel = (dateStr) => {
   const date = new Date(dateStr)
@@ -53,14 +56,14 @@ const dayLabel = (dateStr) => {
       </div>
     </div>
 
-    <svg class="trend-svg" :viewBox="`0 0 ${CHART.width} ${CHART.height}`" preserveAspectRatio="none">
+    <svg class="trend-svg" :viewBox="`0 0 ${CHART.width} ${CHART.height}`">
       <!-- 강수량 막대 (배경) -->
       <rect
         v-for="(d, i) in daily"
         :key="'bar-' + d.date"
-        :x="xForIndex(i, daily.length) - 8"
+        :x="xForIndex(i, daily.length) - precipBarWidth / 2"
         :y="CHART.padTop + plotHeight - ((d.precipitationSum ?? 0) / maxPrecip) * precipBarHeight"
-        width="16"
+        :width="precipBarWidth"
         :height="((d.precipitationSum ?? 0) / maxPrecip) * precipBarHeight"
         class="precip-bar"
       />
@@ -70,11 +73,11 @@ const dayLabel = (dateStr) => {
       <polyline :points="minLinePoints" class="line min" />
 
       <!-- 데이터 포인트 -->
-      <circle v-for="(d, i) in daily" :key="'max-' + d.date" :cx="xForIndex(i, daily.length)" :cy="yForTemp(d.max)" r="2.6" class="dot max" />
-      <circle v-for="(d, i) in daily" :key="'min-' + d.date" :cx="xForIndex(i, daily.length)" :cy="yForTemp(d.min)" r="2.6" class="dot min" />
+      <circle v-for="(d, i) in daily" :key="'max-' + d.date" :cx="xForIndex(i, daily.length)" :cy="yForTemp(d.max)" r="5" class="dot max" />
+      <circle v-for="(d, i) in daily" :key="'min-' + d.date" :cx="xForIndex(i, daily.length)" :cy="yForTemp(d.min)" r="5" class="dot min" />
 
       <!-- 요일 라벨 -->
-      <text v-for="(d, i) in daily" :key="'label-' + d.date" :x="xForIndex(i, daily.length)" :y="CHART.height - 8" class="day-label" text-anchor="middle">
+      <text v-for="(d, i) in daily" :key="'label-' + d.date" :x="xForIndex(i, daily.length)" :y="CHART.height - 14" class="day-label" text-anchor="middle">
         {{ dayLabel(d.date) }}
       </text>
     </svg>
@@ -131,13 +134,14 @@ const dayLabel = (dateStr) => {
 
 .trend-svg {
   width: 100%;
-  height: 170px;
-  overflow: visible;
+  /* viewBox(800x200)와 같은 비율로 맞춰야 preserveAspectRatio가 왜곡 없이 균일하게 스케일된다 */
+  aspect-ratio: 800 / 200;
+  display: block;
 }
 
 .line {
   fill: none;
-  stroke-width: 2;
+  stroke-width: 3;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -160,12 +164,12 @@ const dayLabel = (dateStr) => {
 
 .precip-bar {
   fill: #4facfe;
-  opacity: 0.18;
-  rx: 3;
+  opacity: 0.22;
+  rx: 5;
 }
 
 .day-label {
-  font-size: 8px;
+  font-size: 15px;
   fill: var(--text-secondary);
 }
 </style>

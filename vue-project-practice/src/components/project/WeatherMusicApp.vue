@@ -5,12 +5,14 @@ import { fetchAllCitiesForecast, getWeatherCodeInfo } from '@/composables/useWea
 
 import AppHeader from './AppHeader.vue'
 import HeroSection from './HeroSection.vue'
+import SearchBar from './SearchBar.vue'
 import WeatherMapSection from './WeatherMapSection.vue'
 import CityWeatherCard from './CityWeatherCard.vue'
 import SongPlayerSection from './SongPlayerSection.vue'
 import WeatherTrendChart from './WeatherTrendChart.vue'
 import ShareCardSection from './ShareCardSection.vue'
 import FavoriteCities from './FavoriteCities.vue'
+import EasterEggModal from './EasterEggModal.vue'
 
 // ── 도시 원본 데이터 (실시간 데이터가 오기 전 보여줄 기본값 포함) ──
 const rawCities = [
@@ -133,6 +135,15 @@ const SONG_GUIDE = {
   ] },
 }
 
+// 🥚 거제 이스터에그 전용 히든 트랙. "거제 야호" 밈이 리센느(RESCENE)의 '러브 어택' 역주행을
+// 이끌었던 실제 이야기에서 착안했다 (자세한 설명은 EasterEggModal.vue에서).
+const EASTER_EGG_SONG = {
+  tracks: [
+    { title: 'LOVE ATTACK', artist: '리센느 (RESCENE)' },
+    { title: 'Pretty Girl', artist: '리센느 (RESCENE)' },
+  ],
+}
+
 const legendItems = [
   { class: 'heat-warning', label: '폭염경보' },
   { class: 'heat-caution', label: '폭염주의보' },
@@ -246,6 +257,61 @@ const favoriteCityObjects = computed(() => cityList.value.filter((c) => favorite
 
 const selectCity = (cityId) => {
   selectedCityId.value = cityId
+  trackGeojeCombo(cityId)
+}
+
+// ── 🥚 이스터에그: 거제를 5번 연속 클릭하면 히든 트랙 공개 ──
+const showEasterEgg = ref(false)
+const geojeClickCount = ref(0)
+let lastGeojeClickAt = 0
+
+const trackGeojeCombo = (cityId) => {
+  const city = cityList.value.find((c) => c.id === cityId)
+  if (city?.name !== '거제') {
+    geojeClickCount.value = 0 // 다른 도시를 누르면 콤보가 끊긴다
+    return
+  }
+
+  const now = Date.now()
+  // 이전 클릭에서 1.2초 안에 다시 눌러야 "연속 클릭"으로 인정 (그냥 5번 아무 때나 누른 게 아님)
+  geojeClickCount.value = now - lastGeojeClickAt > 1200 ? 1 : geojeClickCount.value + 1
+  lastGeojeClickAt = now
+
+  if (geojeClickCount.value >= 5) {
+    showEasterEgg.value = true
+    geojeClickCount.value = 0
+  }
+}
+
+// ── 지역 검색 ──
+// practice/ModelBasic.vue에서 배운 ":value + @input"을 커스텀 컴포넌트의 v-model로 확장한 것.
+// searchQuery는 SearchBar.vue와 v-model:query로 연결되어 입력할 때마다 여기 값이 바로 갱신된다.
+const searchQuery = ref('')
+
+// computed: searchQuery.value가 바뀔 때만 다시 계산되는 "검색어와 매칭되는 도시 목록"
+const searchMatches = computed(() => {
+  const keyword = searchQuery.value.trim()
+  if (!keyword) return []
+  return cityList.value.filter((city) => city.name.includes(keyword))
+})
+
+// 드롭다운에는 최대 6개까지만 보여준다 (computed 위에 computed를 쌓는 연쇄 의존성)
+const searchSuggestions = computed(() => searchMatches.value.slice(0, 6))
+
+// 지도 위에서 검색어와 매칭되는 핀만 강조하기 위한 id 집합. 검색어가 없으면 null(=강조 없음)
+const searchHighlightIds = computed(() => (searchQuery.value.trim() ? new Set(searchMatches.value.map((c) => c.id)) : null))
+
+// watch: composition/WatchersBasic.vue와 같은 형태. searchQuery가 바뀔 때마다(=글자 입력마다) 실행됨
+watch(searchQuery, (keyword) => {
+  if (!keyword) return
+  console.log(`🔍 [검색] "${keyword}" → ${searchMatches.value.length}개 도시 매칭`)
+})
+
+// 검색 결과를 클릭하면 그 도시를 선택하고 지도 섹션으로 이동, 검색창은 비운다
+const selectSearchResult = (cityId) => {
+  selectCity(cityId)
+  searchQuery.value = ''
+  scrollToSection('map')
 }
 
 // ── 내 위치와 가장 가까운 도시 찾기 (Geolocation API) ──
@@ -319,6 +385,12 @@ const scrollToSection = (sectionId) => {
       @locate-me="locateMe"
     />
 
+    <!--
+      v-model:query="searchQuery" 는 :query="searchQuery" @update:query="searchQuery = $event" 를 줄인 문법.
+      practice/ModelBasic.vue, ModelForm.vue에서 배운 v-model을 커스텀 컴포넌트에 적용한 형태다.
+    -->
+    <SearchBar v-model:query="searchQuery" :suggestions="searchSuggestions" @select-city="selectSearchResult" />
+
     <main class="sections">
       <p v-if="loadError" class="load-error">⚠️ {{ loadError }}</p>
 
@@ -330,6 +402,7 @@ const scrollToSection = (sectionId) => {
           :selected-city-id="selectedCity.id"
           :province-paths="provincePaths"
           :legend-items="legendItems"
+          :highlight-ids="searchHighlightIds"
           @select-city="selectCity"
         />
       </section>
@@ -374,6 +447,9 @@ const scrollToSection = (sectionId) => {
     <footer class="app-footer">
       <p>WeatherTune · 날씨 데이터 제공: Open-Meteo</p>
     </footer>
+
+    <!-- 🥚 거제를 5번 연속 클릭하면 열리는 이스터에그. v-if라서 평소엔 DOM에 아예 없다가 조건 충족 시에만 생성됨 -->
+    <EasterEggModal v-if="showEasterEgg" :song="EASTER_EGG_SONG" @close="showEasterEgg = false" />
   </div>
 </template>
 
