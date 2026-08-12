@@ -1,0 +1,89 @@
+<script setup>
+</script>
+
+<template>
+  <div class="task4-shell">
+    <nav class="task4-nav">
+      <RouterLink to="/" class="brand">🌦️ 웨더튠 Router</RouterLink>
+      <!-- RouterLink: <a>로 렌더링되지만 클릭해도 새로고침 없이 라우트만 바뀐다 (SPA 네비게이션) -->
+      <div class="nav-links">
+        <RouterLink to="/" class="nav-link">홈</RouterLink>
+        <RouterLink to="/ranking" class="nav-link">랭킹</RouterLink>
+        <RouterLink to="/about" class="nav-link">소개</RouterLink>
+      </div>
+    </nav>
+
+    <!-- RouterView: 현재 URL과 매칭된 라우트의 컴포넌트가 이 자리에 그려진다 (router/index.js 참고) -->
+    <main class="task4-main">
+      <RouterView />
+    </main>
+  </div>
+</template>
+
+<style scoped>
+.task4-shell {
+  --gh-bg: #0d1117;
+  --gh-bg-elevated: #161b22;
+  --gh-bg-inset: #010409;
+  --gh-border: #30363d;
+  --gh-border-muted: #21262d;
+  --gh-text: #e6edf3;
+  --gh-text-secondary: #8b949e;
+  --gh-accent: #58a6ff;
+  --gh-accent-subtle: rgba(56, 139, 253, 0.15);
+
+  min-height: 100vh;
+  color: var(--gh-text);
+  background: var(--gh-bg);
+}
+
+.task4-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: var(--gh-bg);
+  border-bottom: 1px solid var(--gh-border-muted);
+}
+
+.brand {
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--gh-text);
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 18px;
+}
+
+.nav-link {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--gh-text-secondary);
+  text-decoration: none;
+  padding: 4px 2px;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s ease;
+}
+
+.nav-link:hover {
+  color: var(--gh-text);
+}
+
+/* router-link-active: Vue Router가 현재 라우트와 매칭되는 RouterLink에 자동으로 붙여주는 클래스 */
+.nav-link.router-link-exact-active {
+  color: var(--gh-text);
+  border-bottom-color: var(--gh-accent);
+}
+
+.task4-main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+}
+</style>
