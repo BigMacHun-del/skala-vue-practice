@@ -1,6 +1,9 @@
 <script setup>
+import { computed } from 'vue'
+import { useConfigStore } from '@/stores/configStore'
+
 // props: 카드 1개 분량의 도시 정보만 받아서 표시 (v-for로 여러 번 재사용됨)
-defineProps({
+const props = defineProps({
   city: { type: Object, required: true },
   active: { type: Boolean, default: false },
   isFavorite: { type: Boolean, default: false },
@@ -8,6 +11,17 @@ defineProps({
 
 // emits: 카드 클릭(select)·별표 클릭(toggle-favorite) 둘 다 상태 변경은 부모가 담당
 defineEmits(['select', 'toggle-favorite'])
+
+// 단위 변환은 스토어(configStore)를 보는 컴포넌트마다 각자 계산한다 (컴포저블로 공유하지 않는 이유는
+// 요구사항에서 일부러 범위를 좁혀둔 부분 - CityDetailView.vue/FavoriteCities.vue에도 같은 모양의 코드가 있다)
+const configStore = useConfigStore()
+const displayTemp = computed(() => {
+  const rawTemp = props.city.temp // 원본 데이터는 항상 섭씨 숫자
+  if (configStore.unit === 'fahrenheit') {
+    return Math.round((rawTemp * 9) / 5 + 32)
+  }
+  return Math.round(rawTemp)
+})
 </script>
 
 <template>
@@ -29,7 +43,7 @@ defineEmits(['select', 'toggle-favorite'])
 
     <div class="temp-row">
       <span class="weather-icon">{{ city.weatherIcon }}</span>
-      <span class="temp-value">{{ Math.round(city.temp) }}°</span>
+      <span class="temp-value">{{ displayTemp }}{{ configStore.unitSymbol }}</span>
     </div>
 
     <p class="weather-label">{{ city.weatherLabel }}</p>
@@ -40,6 +54,13 @@ defineEmits(['select', 'toggle-favorite'])
     </div>
 
     <p v-if="city.precipitation != null" class="precip-line">💧 {{ city.precipitation.toFixed(1) }}mm · 🍃 {{ city.windSpeed?.toFixed(0) ?? '-' }}km/h</p>
+
+    <!--
+      RouterLink: main.js에서 app.use(router)로 등록해두면 어디서든 import 없이 바로 쓸 수 있는 전역 컴포넌트.
+      /city/:cityId 라우트(router/index.js)로 이동해서 이 도시만 딱 보여주는 공유용 페이지(CityDetailView)를 연다.
+      @click.stop으로 바깥 button의 select 클릭이 같이 발생하지 않게 막는다.
+    -->
+    <RouterLink :to="`/city/${city.id}`" class="share-link" @click.stop>🔗 공유 링크</RouterLink>
   </button>
 </template>
 
@@ -194,5 +215,18 @@ defineEmits(['select', 'toggle-favorite'])
   font-size: 0.72rem;
   color: var(--text-secondary);
   margin-top: 2px;
+}
+
+.share-link {
+  align-self: flex-start;
+  margin-top: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent-2);
+  text-decoration: none;
+}
+
+.share-link:hover {
+  text-decoration: underline;
 }
 </style>

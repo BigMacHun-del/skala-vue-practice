@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
+import { useConfigStore } from '@/stores/configStore'
 
 // 선택된 도시 + 추천곡을 canvas에 그려서 이미지로 내려받을 수 있게 하는 "공유 카드" 기능
 // props: city/song이 바뀔 때마다 카드를 다시 그려야 하므로 watch에서 이 값들을 감시함
@@ -9,6 +10,14 @@ const props = defineProps({
   accentFrom: { type: String, default: '#ff7e5f' },
   accentTo: { type: String, default: '#7c5cff' },
 })
+
+// canvas는 template이 아니라 JS 코드로 직접 그리기 때문에 computed 대신, 그릴 때마다(drawCard 안에서)
+// 그 시점의 configStore.unit을 보고 변환한다 - CityWeatherCard.vue의 displayTemp와 같은 계산.
+const configStore = useConfigStore()
+const formatTemp = (temp) => {
+  const value = configStore.unit === 'fahrenheit' ? Math.round((temp * 9) / 5 + 32) : Math.round(temp)
+  return `${value}${configStore.unitSymbol}`
+}
 
 const canvasRef = ref(null)
 const CARD_WIDTH = 640
@@ -46,7 +55,7 @@ const drawCard = () => {
   // 도시명 + 기온
   ctx.fillStyle = '#ffffff'
   ctx.font = '800 44px -apple-system, sans-serif'
-  ctx.fillText(`${props.city.name} ${Math.round(props.city.temp)}°`, 130, 118)
+  ctx.fillText(`${props.city.name} ${formatTemp(props.city.temp)}`, 130, 118)
 
   // 무드 문구
   ctx.font = '600 20px -apple-system, sans-serif'
@@ -98,7 +107,8 @@ const downloadCard = () => {
 
 onMounted(drawCard)
 // watch: 감시 대상을 배열 형태의 getter로 넘기면 그 안의 값들 중 하나라도 바뀔 때 콜백(drawCard)이 다시 실행됨
-watch(() => [props.city, props.song, props.accentFrom, props.accentTo], drawCard, { deep: true })
+// configStore.unit도 감시 목록에 추가해서, 단위를 토글하면 이미 그려둔 canvas도 바로 다시 그려진다.
+watch(() => [props.city, props.song, props.accentFrom, props.accentTo, configStore.unit], drawCard, { deep: true })
 </script>
 
 <template>

@@ -58,7 +58,7 @@ onUnmounted(() => {
       <h3 class="egg-title">거제 야호 🏝️</h3>
       <p class="egg-desc">
         거제를 5번 연속 클릭해서 찾아낸 히든 플레이리스트예요.<br />
-        실제로 "거제 야호"라는 밈이 걸그룹 <strong>리센느(RESCENE)</strong>의 역주행을 이끌었다는 진짜 이야기에서 착안했어요.
+        거제는 제주도 다음으로  <strong>리센느(RESCENE)</strong>의 역주행을 이끌었다는 진짜 이야기에서 착안했어요.
       </p>
 
       <ul class="egg-track-list">

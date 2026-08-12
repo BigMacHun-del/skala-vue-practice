@@ -1,5 +1,6 @@
 <script setup>
 import { ref, watch } from 'vue'
+import { useConfigStore } from '@/stores/configStore'
 
 // 즐겨찾기한 도시 목록 + 브라우저 알림(Notification API) 연동
 // props: 즐겨찾기 도시 배열은 부모(WeatherMusicApp)가 관리, 여긴 감시하고 보여주기만 함
@@ -10,6 +11,14 @@ const props = defineProps({
 
 // emits: 칩 클릭(select)·즐겨찾기 해제(toggle-favorite) 모두 실제 상태 변경은 부모에게 위임
 const emit = defineEmits(['select', 'toggle-favorite'])
+
+// v-for 안에서 도시마다 온도를 찍어야 해서, CityWeatherCard.vue처럼 computed 하나로는 안 되고
+// 인자를 받는 일반 함수로 만든다. configStore.unit이 바뀌면 이 컴포넌트가 다시 렌더링되면서 같이 갱신됨.
+const configStore = useConfigStore()
+const formatTemp = (temp) => {
+  const value = configStore.unit === 'fahrenheit' ? Math.round((temp * 9) / 5 + 32) : Math.round(temp)
+  return `${value}${configStore.unitSymbol}`
+}
 
 const WARNING_CLASSES = new Set(['heat-warning', 'cold-warning', 'rain-warning'])
 
@@ -71,7 +80,7 @@ watch(
       >
         <span class="chip-icon">{{ city.weatherIcon }}</span>
         <span class="chip-name">{{ city.name }}</span>
-        <span class="chip-temp">{{ Math.round(city.temp) }}°</span>
+        <span class="chip-temp">{{ formatTemp(city.temp) }}</span>
         <span class="chip-remove" @click.stop="emit('toggle-favorite', city.id)">✕</span>
       </button>
     </div>

@@ -1,4 +1,6 @@
 <script setup>
+import UnitToggler from './UnitToggler.vue'
+
 // props: 부모(WeatherMusicApp)가 갖고 있는 상태를 그대로 내려받아 화면에만 반영 (직접 수정 X)
 defineProps({
   isDark: { type: Boolean, required: true },
@@ -29,6 +31,10 @@ const navItems = [
         <span v-if="item.id === 'favorites' && favoriteCount > 0" class="nav-badge">{{ favoriteCount }}</span>
       </button>
     </nav>
+
+    <!-- Navigation Bar(.nav) 옆에 배치된 단위 토글. 스토어에 직접 붙어있어서 부모(WeatherMusicApp)가
+         props/emits로 중계해줄 필요가 없다 (테마 토글과의 차이점) -->
+    <UnitToggler />
 
     <button class="theme-toggle" type="button" @click="$emit('toggle-theme')" :aria-pressed="isDark">
       <span class="theme-toggle-icon">{{ isDark ? '🌙' : '☀️' }}</span>

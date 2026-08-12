@@ -5,6 +5,7 @@ import PropsEmitsParent from './components/component/PropsEmitsParent.vue';
 import SlotDefaultParent from './components/component/SlotDefaultParent.vue';
 import SlotNamedParent from './components/component/SlotNamedParent.vue';
 import SlotScopedParent from './components/component/SlotScopedParent.vue';
+import StoreCounter from './components/component/StoreCounter.vue';
 
 </script>
 
@@ -21,6 +22,8 @@ import SlotScopedParent from './components/component/SlotScopedParent.vue';
     <SlotDefaultParent />
     <SlotNamedParent />
     <SlotScopedParent />
+    <h1>Store Practice</h1>
+    <StoreCounter />
   </div>
 </template>
 

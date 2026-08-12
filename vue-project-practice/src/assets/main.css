@@ -5,6 +5,44 @@
   font-weight: normal;
 }
 
+/*
+  WeatherTune(components/project) 공용 다크/라이트 테마 변수.
+  원래 WeatherMusicApp.vue의 scoped 스타일 안에 있었지만, CityDetailView.vue처럼
+  다른 라우트 페이지에서도 같은 --bg/--text/--accent-* 변수가 필요해져서 전역으로 옮겼다.
+  CSS 커스텀 프로퍼티는 scoped 여부와 상관없이 이 클래스가 걸린 요소의 자손 전체에 상속된다.
+*/
+.theme-dark {
+  --bg: #0b0c14;
+  --bg-elevated: #14151f;
+  --bg-inset: #05060a;
+  --border: #262838;
+  --text: #f2f1f7;
+  --text-secondary: #9a98ad;
+  --accent-1: #ff7e5f;
+  --accent-2: #7c5cff;
+  --map-bg: radial-gradient(circle at 28% 18%, #0c1f18 0%, #060d10 45%, #010409 100%);
+  --map-land-1: #14301f;
+  --map-land-2: #2f5c38;
+  --map-land-3: #1c3722;
+  --map-border: rgba(88, 166, 255, 0.2);
+}
+
+.theme-light {
+  --bg: #faf7f2;
+  --bg-elevated: #ffffff;
+  --bg-inset: #f1ede4;
+  --border: #e6e1d3;
+  --text: #201f2b;
+  --text-secondary: #6b6875;
+  --accent-1: #ff7e5f;
+  --accent-2: #7c5cff;
+  --map-bg: linear-gradient(160deg, #cdeaff 0%, #e8f5ff 60%, #f7fcff 100%);
+  --map-land-1: #bfead0;
+  --map-land-2: #8fd19e;
+  --map-land-3: #6fb583;
+  --map-border: rgba(59, 130, 246, 0.35);
+}
+
 a,
 .green {
   text-decoration: none;
