@@ -211,6 +211,13 @@ const PARTICLE_SLOTS = [0, 1, 2, 3, 4]
 .legend-dot.rain-warning {
   background: #0369a1;
 }
+/* 폭염/한파/호우 외 나머지 특보(대설·강풍·태풍·안개 등) 공용 색상 - useKmaAlerts.js의 hazardToClass 참고 */
+.legend-dot.other-caution {
+  background: #f59e0b;
+}
+.legend-dot.other-warning {
+  background: #dc2626;
+}
 
 /* 등급별 색상 (지도 핀) - 은은한 발광 */
 .pin-dot.heat-warning {
@@ -240,6 +247,14 @@ const PARTICLE_SLOTS = [0, 1, 2, 3, 4]
 .pin-dot.cold-warning {
   background: #7c5cff;
   box-shadow: 0 0 8px 1px rgba(124, 92, 255, 0.7);
+}
+.pin-dot.other-caution {
+  background: #f59e0b;
+  box-shadow: 0 0 8px 1px rgba(245, 158, 11, 0.7);
+}
+.pin-dot.other-warning {
+  background: #dc2626;
+  box-shadow: 0 0 8px 1px rgba(220, 38, 38, 0.7);
 }
 
 .legend {

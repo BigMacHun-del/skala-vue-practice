@@ -6,14 +6,18 @@
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
-    "preview": "vite preview",
+    "preview": "vite preview --host",
     "lint": "run-s lint:*",
     "lint:oxlint": "oxlint . --fix",
     "lint:eslint": "eslint . --fix --cache",
     "format": "prettier --write --experimental-cli src/"
   },
   "dependencies": {
+    "@primevue/themes": "^4.5.4",
+    "axios": "^1.19.0",
     "pinia": "^3.0.4",
+    "primeicons": "^8.0.0",
+    "primevue": "^4.5.5",
     "vue": "^3.5.32",
     "vue-router": "^5.0.4"
   },

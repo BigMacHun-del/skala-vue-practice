@@ -2,7 +2,7 @@
 import AlertBadge from '../../task3/AlertBadge.vue'
 
 // props down / emits up: 이 컴포넌트는 city 데이터를 받아 보여주기만 하고,
-// 실제 라우팅(router.push)은 부모 View가 담당한다 (컴포넌트는 라우터를 몰라도 됨 → 재사용성↑).
+// 실제 라우팅(router.push)은 부모 View가 담당한다 (컴포넌트는 라우터를 몰라도 됨 → 재사용성 증가).
 defineProps({
   city: { type: Object, required: true },
   active: { type: Boolean, default: false },

@@ -1,6 +1,14 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import { useConfigStore } from '@/stores/configStore'
+import Button from 'primevue/button'
+import Toast from 'primevue/toast'
+import { useToast } from 'primevue/usetoast'
+
+// 이 섹션에만 PrimeVue를 적용해봄: 순수 CSS 버튼 대신 PrimeVue의 Button 컴포넌트를 쓰고,
+// 저장이 끝나면 PrimeVue Toast로 "저장 완료" 알림을 띄운다 (버튼 겉모습만 바꾸는 게 아니라
+// 실제 상호작용에도 라이브러리를 써보는 게 목적). 색은 :deep()으로 이 앱의 그라디언트에 맞게 덮어썼다.
+const toast = useToast()
 
 // 선택된 도시 + 추천곡을 canvas에 그려서 이미지로 내려받을 수 있게 하는 "공유 카드" 기능
 // props: city/song이 바뀔 때마다 카드를 다시 그려야 하므로 watch에서 이 값들을 감시함
@@ -103,6 +111,13 @@ const downloadCard = () => {
   link.download = `weathertune-${props.city.name}.png`
   link.href = canvas.toDataURL('image/png')
   link.click()
+
+  toast.add({
+    severity: 'success',
+    summary: '저장 완료',
+    detail: `${props.city.name} 공유 카드를 이미지로 저장했어요.`,
+    life: 2500,
+  })
 }
 
 onMounted(drawCard)
@@ -113,8 +128,9 @@ watch(() => [props.city, props.song, props.accentFrom, props.accentTo, configSto
 
 <template>
   <div class="share-section">
+    <Toast position="bottom-center" />
     <canvas ref="canvasRef" class="share-canvas" :width="CARD_WIDTH" :height="CARD_HEIGHT"></canvas>
-    <button class="download-btn" type="button" @click="downloadCard">⬇ 이미지로 저장</button>
+    <Button class="download-btn" label="이미지로 저장" icon="pi pi-download" rounded @click="downloadCard" />
   </div>
 </template>
 
@@ -134,20 +150,27 @@ watch(() => [props.city, props.song, props.accentFrom, props.accentTo, configSto
   box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.35);
 }
 
-.download-btn {
-  border: 1px solid var(--border);
-  background: var(--bg-elevated);
-  color: var(--text);
+/*
+  PrimeVue의 <Button class="download-btn">은 fallthrough attrs로 렌더링된 <button> 태그에
+  "download-btn"과 "p-button"(PrimeVue 자체 클래스)이 함께 붙는다 - 즉 같은 엘리먼트라 :deep()이
+  필요 없다. 다만 p-button 단독 선택자와 우선순위(specificity)가 같으면 로드 순서에 따라 밀릴 수
+  있어서, .download-btn.p-button처럼 두 클래스를 합쳐 우선순위를 확실히 높여 이 앱의 그라디언트
+  필 버튼 톤으로 덮어썼다.
+*/
+.download-btn.p-button {
+  border: none;
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+  color: #ffffff;
   font-weight: 700;
   font-size: 0.88rem;
-  padding: 10px 22px;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: all 0.15s ease;
+  padding: 10px 24px;
+  box-shadow: 0 10px 24px -12px rgba(0, 0, 0, 0.5);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.download-btn:hover {
-  border-color: var(--accent-2);
-  color: var(--accent-2);
+.download-btn.p-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px -12px rgba(0, 0, 0, 0.55);
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
 }
 </style>

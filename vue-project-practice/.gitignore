@@ -14,6 +14,9 @@ dist-ssr
 coverage
 *.local
 
+# API 키 등 민감한 값이 들어있는 실제 환경변수 파일 (.env.example만 git에 커밋됨)
+.env
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

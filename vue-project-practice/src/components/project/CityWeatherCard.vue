@@ -210,6 +210,17 @@ const displayTemp = computed(() => {
   background: rgba(3, 105, 161, 0.16);
   border-color: rgba(3, 105, 161, 0.4);
 }
+/* 폭염/한파/호우 외 나머지 특보(대설·강풍·태풍·안개 등) 공용 색상 - useKmaAlerts.js의 hazardToClass 참고 */
+.badge.other-caution {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.14);
+  border-color: rgba(245, 158, 11, 0.35);
+}
+.badge.other-warning {
+  color: #dc2626;
+  background: rgba(220, 38, 38, 0.16);
+  border-color: rgba(220, 38, 38, 0.4);
+}
 
 .precip-line {
   font-size: 0.72rem;

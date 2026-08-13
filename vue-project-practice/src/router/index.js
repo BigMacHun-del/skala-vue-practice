@@ -17,6 +17,19 @@ const routes = [
     name: 'city-detail',
     component: () => import('../components/project/CityDetailView.vue'),
   },
+  {
+    // 🥚 거제 이스터에그의 "관광지 추천 보기" 버튼이 여기로 연결된다.
+    path: '/geoje',
+    name: 'geoje-home',
+    component: () => import('../components/project/geoje/GeojeHomeView.vue'),
+  },
+  {
+    // :zoneId → 동적 세그먼트. /geoje/hakdong 처럼 들어오면 GeojeZoneDetailView에서
+    // useRoute().params.zoneId === 'hakdong' 으로 읽어서 해당 구역 정보만 보여준다.
+    path: '/geoje/:zoneId',
+    name: 'geoje-zone',
+    component: () => import('../components/project/geoje/GeojeZoneDetailView.vue'),
+  },
 ]
 
 const router = createRouter({

@@ -58,7 +58,7 @@ onUnmounted(() => {
       <h3 class="egg-title">거제 야호 🏝️</h3>
       <p class="egg-desc">
         거제를 5번 연속 클릭해서 찾아낸 히든 플레이리스트예요.<br />
-        거제는 제주도 다음으로  <strong>리센느(RESCENE)</strong>의 역주행을 이끌었다는 진짜 이야기에서 착안했어요.
+        거제는 제주도 다음으로  <strong>두 번째로 큰섬</strong>이예요.
       </p>
 
       <ul class="egg-track-list">
@@ -70,6 +70,10 @@ onUnmounted(() => {
           <button class="egg-preview-btn" type="button" @click="openPreview(track)">▶ 미리듣기</button>
         </li>
       </ul>
+
+      <!-- RouterLink: 누르면 /geoje로 이동 - WeatherMusicApp이 통째로 언마운트되면서
+           이 모달도 자연히 같이 사라지므로 close를 따로 emit할 필요가 없다. -->
+      <RouterLink to="/geoje" class="egg-tour-btn">🏝️ 거제 관광지 추천 보기</RouterLink>
     </div>
   </div>
 </template>
@@ -210,5 +214,18 @@ onUnmounted(() => {
 .egg-preview-btn:hover {
   border-color: var(--accent-2);
   color: var(--accent-2);
+}
+
+.egg-tour-btn {
+  display: block;
+  margin-top: 20px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.9rem;
+  text-decoration: none;
+  text-align: center;
 }
 </style>

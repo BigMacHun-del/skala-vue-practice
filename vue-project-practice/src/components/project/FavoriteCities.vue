@@ -20,7 +20,7 @@ const formatTemp = (temp) => {
   return `${value}${configStore.unitSymbol}`
 }
 
-const WARNING_CLASSES = new Set(['heat-warning', 'cold-warning', 'rain-warning'])
+const WARNING_CLASSES = new Set(['heat-warning', 'cold-warning', 'rain-warning', 'other-warning'])
 
 const notifyPermission = ref(typeof Notification !== 'undefined' ? Notification.permission : 'unsupported')
 const alreadyNotified = new Set() // "도시id:등급class" 형태로 중복 알림 방지
@@ -39,7 +39,7 @@ const notifyIfWarning = (city) => {
     const key = `${city.id}:${grade.class}`
     if (alreadyNotified.has(key)) continue
     alreadyNotified.add(key)
-    // eslint-disable-next-line no-new
+     
     new Notification(`${city.name} ${grade.label}`, {
       body: `현재 기온 ${Math.round(city.temp)}°C · 즐겨찾기한 도시에 특보가 발효됐어요.`,
       icon: undefined,

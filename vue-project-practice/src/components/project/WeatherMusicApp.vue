@@ -13,6 +13,7 @@ import WeatherTrendChart from './WeatherTrendChart.vue'
 import ShareCardSection from './ShareCardSection.vue'
 import FavoriteCities from './FavoriteCities.vue'
 import EasterEggModal from './EasterEggModal.vue'
+import KmaAlertBanner from './KmaAlertBanner.vue'
 
 // 도시 목록/날씨 데이터/지도 좌표 계산은 CityDetailView.vue(도시 상세·공유 페이지)와 함께 쓰는
 // composables/useWeatherCities.js로 옮겼다. 두 화면이 각자 fetch하지 않고 같은 캐시를 공유한다.
@@ -187,6 +188,9 @@ const scrollToSection = (sectionId) => {
     -->
     <AppHeader :is-dark="isDark" :favorite-count="favoriteCityObjects.length" @toggle-theme="toggleTheme" @navigate="scrollToSection" />
 
+    <!-- 기상청 공공데이터포털 특보 API 연동 - 도시별이 아니라 전국 단위라서 별도 배너로 뺐다 (KmaAlertBanner.vue) -->
+    <KmaAlertBanner />
+
     <HeroSection
       :city-count="cityList.length"
       :warning-count="heatAlertCount + coldAlertCount"
@@ -221,7 +225,7 @@ const scrollToSection = (sectionId) => {
 
       <section id="trend" class="section-block">
         <h2 class="block-title">{{ selectedCity.name }} 기온 트렌드</h2>
-        <p class="block-desc">Open-Meteo 7일 예보 기반</p>
+        <p class="block-desc">OpenWeatherMap 5일 예보 기반</p>
         <WeatherTrendChart v-if="selectedCity.daily?.length" :city-name="selectedCity.name" :daily="selectedCity.daily" />
         <!-- dailyState: useWeatherCities.js가 도시별로 따로 들고 있는 로딩 상태. 실패했을 때는
              "불러오는 중"이라고 거짓말하지 않고 다시 시도 버튼을 보여준다. -->
@@ -263,7 +267,7 @@ const scrollToSection = (sectionId) => {
     </main>
 
     <footer class="app-footer">
-      <p>WeatherTune · 날씨 데이터 제공: Open-Meteo</p>
+      <p>WeatherTune · 날씨 데이터 제공: OpenWeatherMap</p>
     </footer>
 
     <!-- 🥚 거제를 5번 연속 클릭하면 열리는 이스터에그. v-if라서 평소엔 DOM에 아예 없다가 조건 충족 시에만 생성됨 -->
