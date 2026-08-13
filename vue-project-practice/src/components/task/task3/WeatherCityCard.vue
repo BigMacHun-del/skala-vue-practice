@@ -1,8 +1,7 @@
 <script setup>
 import AlertBadge from './AlertBadge.vue'
 
-// 도시 목록의 카드 1개. city 객체를 props로 받아 표시만 하고,
-// 클릭되면 직접 상태를 바꾸지 않고 select 이벤트로 부모(WeatherComposition)에게 알린다.
+// 도시 카드 1개. 클릭 시 select 이벤트로 부모에게 알린다.
 defineProps({
   city: { type: Object, required: true },
   active: { type: Boolean, default: false },

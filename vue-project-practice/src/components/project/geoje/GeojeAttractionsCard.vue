@@ -1,7 +1,6 @@
 <script setup>
 import GlassCard from './GlassCard.vue'
 
-// props: 이 구역의 명소/놀거리 배열만 받아서 나열한다 (v-for)
 defineProps({
   attractions: { type: Array, required: true }, // [{ name, desc }]
 })

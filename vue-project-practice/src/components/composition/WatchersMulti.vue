@@ -5,9 +5,8 @@ const city = ref('서울')
 const dateType = ref('오늘')
 const apiStatus = ref('대기 중...')
 
-//  두 개의 ref 변수를 배열[] 형태로 묶어 동시에 감시합니다.
+// 여러 ref를 배열로 묶어 동시에 감시. new/old 값도 같은 순서로 매핑되어 들어옴
 watch([city, dateType], ([newCity, newDate], [oldCity, oldDate]) => {
-  // 새 값과 옛 값도 상단에 적어준 [city, dateType] 순서대로 매핑되어 들어옵니다.
   apiStatus.value = `[변경 감지] ${oldCity}(${oldDate}) ➡️ ${newCity}(${newDate})`
 
   console.log(`[통합 API 호출] ${newCity}의 ${newDate} 날씨를 불러옵니다...`)

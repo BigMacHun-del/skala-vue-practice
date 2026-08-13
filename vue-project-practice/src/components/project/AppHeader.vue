@@ -1,13 +1,11 @@
 <script setup>
 import UnitToggler from './UnitToggler.vue'
 
-// props: 부모(WeatherMusicApp)가 갖고 있는 상태를 그대로 내려받아 화면에만 반영 (직접 수정 X)
 defineProps({
   isDark: { type: Boolean, required: true },
   favoriteCount: { type: Number, default: 0 },
 })
 
-// emits: 테마 토글/메뉴 클릭은 여기서 상태를 바꾸지 않고 이벤트만 쏴서 부모가 처리하게 함
 defineEmits(['toggle-theme', 'navigate'])
 
 const navItems = [
@@ -32,8 +30,7 @@ const navItems = [
       </button>
     </nav>
 
-    <!-- Navigation Bar(.nav) 옆에 배치된 단위 토글. 스토어에 직접 붙어있어서 부모(WeatherMusicApp)가
-         props/emits로 중계해줄 필요가 없다 (테마 토글과의 차이점) -->
+    <!-- 스토어에 직접 붙어있어서 부모가 props/emits로 중계할 필요 없음 -->
     <UnitToggler />
 
     <button class="theme-toggle" type="button" @click="$emit('toggle-theme')" :aria-pressed="isDark">

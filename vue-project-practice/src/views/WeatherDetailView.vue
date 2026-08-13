@@ -4,18 +4,12 @@ import { useRoute } from 'vue-router'
 import { rawCities, getWeatherAlert } from '../components/task/task4/weatherTaskData.js'
 import AlertBadge from '../components/task/task3/AlertBadge.vue'
 
-// /weather/:cityId 동적 경로에 매칭되는 상세 페이지.
-// useRoute()로 현재 라우트 정보를 읽으면, route.params.cityId에 URL의 :cityId 부분이 그대로 들어온다.
+// /weather/:cityId 동적 경로에 매칭되는 상세 페이지
 const route = useRoute()
 
 const city = ref(null)
 
-// 요구사항: "Router 동적 경로 매칭에 해당되는 도시ID(cityId)를 기반으로 Mount 시점에 Mock Data에서 도시 객체 선택"
-// → onMounted 안에서 한 번만 mock 배열을 조회해 city를 채운다.
-// ⚠️ 주의(실습 포인트): 이 컴포넌트가 재사용되는 상태로 /weather/city_01 → /weather/city_02 처럼
-// "상세 페이지끼리" 바로 이동하면 컴포넌트가 다시 mount되지 않아 onMounted가 재실행되지 않는다.
-// 그 경우까지 대응하려면 watch(() => route.params.cityId, ...)로 감시해야 하지만,
-// 이번 실습은 onMounted 시점의 mock 데이터 조회 자체를 연습하는 게 목적이라 최소 형태로 남겨둔다.
+// mount 시점에 mock 데이터에서 도시 객체를 선택
 onMounted(() => {
   const found = rawCities.find((c) => c.id === route.params.cityId)
   city.value = found ? { ...found, alert: getWeatherAlert(found.temp) } : null
@@ -51,7 +45,6 @@ onMounted(() => {
       <p class="detail-updated">마지막 업데이트: {{ city.updatedAt }} (mock data)</p>
     </template>
 
-    <!-- v-else: cityId에 해당하는 mock 도시가 없을 때 (예: /weather/city_99) -->
     <p v-else class="detail-empty">"{{ route.params.cityId }}" 도시 정보를 찾을 수 없어요.</p>
   </div>
 </template>

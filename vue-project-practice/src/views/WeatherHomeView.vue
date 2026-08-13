@@ -4,19 +4,15 @@ import { useRouter } from 'vue-router'
 import southKoreaSvgRaw from '@/assets/southKoreaHigh.svg?raw'
 import { rawCities, parseProvincePaths, toMapPosition, getWeatherAlert, SONG_GUIDE, legendItems } from '../components/task/task4/weatherTaskData.js'
 
-// 지도/노래 추천 패널은 task3에서 만든 걸 그대로 재사용 (같은 UI를 두 번 만들 필요 없음)
 import WeatherMapPanel from '../components/task/task3/WeatherMapPanel.vue'
 import SongRecommendationPanel from '../components/task/task3/SongRecommendationPanel.vue'
-// 이번 과제 전용 exercise 부품들
 import BaseDashboardCard from '../components/task/task4/exercise/BaseDashboardCard.vue'
 import SearchBar from '../components/task/task4/exercise/SearchBar.vue'
 import WeatherCard from '../components/task/task4/exercise/WeatherCard.vue'
 
-// "/" 경로에 매칭되는 홈 화면. 기존 WeatherComposition.vue(WeatherParent 역할)를 그대로 가져와
-// Router 과제에 맞게 다듬은 버전 - 상태는 이 View가 소유하고, 자식들은 props/emits로만 주고받는다.
+// "/" 경로의 홈 화면. 상태는 이 View가 소유하고 자식들은 props/emits로만 주고받는다.
 const provincePaths = parseProvincePaths(southKoreaSvgRaw)
 
-// computed: rawCities에 지도 좌표(x, y)와 특보 등급(alert)을 계산해서 붙인 읽기 전용 목록
 const cityList = computed(() =>
   rawCities.map((city) => ({
     ...city,
@@ -31,7 +27,6 @@ const selectedCityId = ref(null)
 const selectedCity = computed(() => cityList.value.find((c) => c.id === selectedCityId.value) ?? hottestCity.value)
 const songRecommendation = computed(() => SONG_GUIDE[selectedCity.value.alert.class])
 
-// exercise/SearchBar.vue와 v-model로 연결되는 검색어. computed로 필터링된 목록을 만든다.
 const searchText = ref('')
 const filteredCities = computed(() => {
   const keyword = searchText.value.trim()
@@ -39,9 +34,7 @@ const filteredCities = computed(() => {
   return cityList.value.filter((city) => city.name.includes(keyword))
 })
 
-// useRouter(): 템플릿의 <RouterLink>와 달리, 스크립트 코드 안에서 "지금 이동시켜야 할 때" 쓰는 방식.
-// WeatherCard의 "상세보기" 버튼을 누르면 view-detail 이벤트가 여기로 올라오고,
-// router.push로 /weather/:cityId 라우트로 화면을 이동시킨다 (Programmatic Navigation).
+// WeatherCard의 상세보기 클릭 시 router.push로 이동 (Programmatic Navigation)
 const router = useRouter()
 const goToDetail = (cityId) => {
   router.push(`/weather/${cityId}`)
@@ -70,10 +63,8 @@ const goToDetail = (cityId) => {
     </BaseDashboardCard>
 
     <BaseDashboardCard section-id="cities" title="도시별 현황">
-      <!-- 기본 v-model: SearchBar가 modelValue/update:modelValue를 쓰므로 v-model만 적어도 양방향 바인딩된다 -->
       <SearchBar v-model="searchText" />
 
-      <!-- v-if / v-else로 검색 결과 유무에 따라 다른 화면을 보여준다 -->
       <div v-if="filteredCities.length > 0" class="city-grid">
         <WeatherCard
           v-for="city in filteredCities"

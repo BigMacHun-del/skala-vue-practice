@@ -5,13 +5,10 @@ import Button from 'primevue/button'
 import Toast from 'primevue/toast'
 import { useToast } from 'primevue/usetoast'
 
-// 이 섹션에만 PrimeVue를 적용해봄: 순수 CSS 버튼 대신 PrimeVue의 Button 컴포넌트를 쓰고,
-// 저장이 끝나면 PrimeVue Toast로 "저장 완료" 알림을 띄운다 (버튼 겉모습만 바꾸는 게 아니라
-// 실제 상호작용에도 라이브러리를 써보는 게 목적). 색은 :deep()으로 이 앱의 그라디언트에 맞게 덮어썼다.
+// 이 섹션에는 PrimeVue Button/Toast를 적용했다 (저장 완료 시 Toast 알림)
 const toast = useToast()
 
-// 선택된 도시 + 추천곡을 canvas에 그려서 이미지로 내려받을 수 있게 하는 "공유 카드" 기능
-// props: city/song이 바뀔 때마다 카드를 다시 그려야 하므로 watch에서 이 값들을 감시함
+// 선택된 도시 + 추천곡을 canvas에 그려서 이미지로 내려받는 공유 카드 기능
 const props = defineProps({
   city: { type: Object, required: true },
   song: { type: Object, required: true },
@@ -19,8 +16,6 @@ const props = defineProps({
   accentTo: { type: String, default: '#7c5cff' },
 })
 
-// canvas는 template이 아니라 JS 코드로 직접 그리기 때문에 computed 대신, 그릴 때마다(drawCard 안에서)
-// 그 시점의 configStore.unit을 보고 변환한다 - CityWeatherCard.vue의 displayTemp와 같은 계산.
 const configStore = useConfigStore()
 const formatTemp = (temp) => {
   const value = configStore.unit === 'fahrenheit' ? Math.round((temp * 9) / 5 + 32) : Math.round(temp)
@@ -121,8 +116,7 @@ const downloadCard = () => {
 }
 
 onMounted(drawCard)
-// watch: 감시 대상을 배열 형태의 getter로 넘기면 그 안의 값들 중 하나라도 바뀔 때 콜백(drawCard)이 다시 실행됨
-// configStore.unit도 감시 목록에 추가해서, 단위를 토글하면 이미 그려둔 canvas도 바로 다시 그려진다.
+// city/song/accent/단위 중 하나라도 바뀌면 canvas를 다시 그린다
 watch(() => [props.city, props.song, props.accentFrom, props.accentTo, configStore.unit], drawCard, { deep: true })
 </script>
 
@@ -150,13 +144,7 @@ watch(() => [props.city, props.song, props.accentFrom, props.accentTo, configSto
   box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.35);
 }
 
-/*
-  PrimeVue의 <Button class="download-btn">은 fallthrough attrs로 렌더링된 <button> 태그에
-  "download-btn"과 "p-button"(PrimeVue 자체 클래스)이 함께 붙는다 - 즉 같은 엘리먼트라 :deep()이
-  필요 없다. 다만 p-button 단독 선택자와 우선순위(specificity)가 같으면 로드 순서에 따라 밀릴 수
-  있어서, .download-btn.p-button처럼 두 클래스를 합쳐 우선순위를 확실히 높여 이 앱의 그라디언트
-  필 버튼 톤으로 덮어썼다.
-*/
+/* PrimeVue Button의 p-button 클래스와 합쳐서 우선순위를 높여 이 앱 톤으로 덮어썼다 */
 .download-btn.p-button {
   border: none;
   background: linear-gradient(135deg, var(--accent-1), var(--accent-2));

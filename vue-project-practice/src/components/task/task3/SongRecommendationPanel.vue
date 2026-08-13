@@ -1,7 +1,7 @@
 <script setup>
 import AlertBadge from './AlertBadge.vue'
 
-// 선택된 도시와, 그 도시 등급에 맞는 추천곡 정보를 부모로부터 그대로 전달받아 보여준다.
+// 선택된 도시와 그 등급에 맞는 추천곡 정보를 부모로부터 받아 표시
 defineProps({
   city: { type: Object, required: true },
   song: { type: Object, required: true },

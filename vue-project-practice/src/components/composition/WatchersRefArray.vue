@@ -1,11 +1,9 @@
 <script setup>
 import { ref, watch } from 'vue'
 
-// 케이스 1: 문자열 배열
 const teamMembers = ref(['홍길동', '이순신', '강감찬'])
 const logMember = ref('대기 중...')
 
-// 케이스 2: 객체 배열
 const cityWeather = ref([
   { name: '서울', temp: 25 },
   { name: '수원', temp: 22 },
@@ -13,7 +11,7 @@ const cityWeather = ref([
 ])
 const logWeather = ref('대기 중...')
 
-// 🟢 1) 기본형 배열의 0번째 요소(글자) 감시하기
+// 기본형 배열의 0번째 요소 감시
 watch(
   () => teamMembers.value[0],
   (newNames, oldNames) => {
@@ -21,8 +19,7 @@ watch(
   },
 )
 
-// 🟢 2) 객체형 배열의 0번째 요소(객체 내부) 감시하기
-// ⚠️ 가리키는 대상이 객체이므로 { deep: true }가 없으면 내부 temp가 변해도 묵묵부답입니다!
+// 객체형 배열은 { deep: true } 없으면 내부 값 변화를 감지하지 못함
 watch(
   () => cityWeather.value[0],
   (newSeoul) => {

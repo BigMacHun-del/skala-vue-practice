@@ -1,8 +1,4 @@
-// task4(Weather Router) 실습에서 WeatherHomeView / WeatherDetailView / WeatherRankingView가
-// 공통으로 쓰는 mock 데이터와 헬퍼 함수 모음. WeatherComposition.vue의 로직을 그대로 가져오되,
-// 상세 페이지(WeatherDetailView)에서 보여줄 습도/풍속/강수량 같은 mock 필드를 추가했다.
-// 실제 서비스라면 이 자리에 기상청 API 호출이 들어가겠지만, 이번 과제는 "Router 문법 실습"이
-// 목적이라 백엔드/외부 API 없이 고정된 mock 배열만 사용한다.
+// WeatherHomeView / WeatherDetailView / WeatherRankingView가 공통으로 쓰는 mock 데이터 + 헬퍼 함수
 export const rawCities = [
   { id: 'city_01', name: '서울', temp: 28, status: '맑음', lat: 37.57, lon: 126.98, humidity: 55, windSpeed: 3.2, precipitation: 0, updatedAt: '10분 전' },
   { id: 'city_02', name: '수원', temp: 18, status: '비', lat: 37.26, lon: 127.01, humidity: 88, windSpeed: 4.6, precipitation: 12.4, updatedAt: '4분 전' },

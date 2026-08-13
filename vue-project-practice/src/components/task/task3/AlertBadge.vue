@@ -1,7 +1,7 @@
 <script setup>
-// 폭염/한파 등급 배지. 여러 컴포넌트(도시 카드, 노래 추천 패널)에서 공통으로 재사용한다.
+// 폭염/한파 등급 배지, 여러 컴포넌트에서 공통 재사용
 defineProps({
-  alertClass: { type: String, required: true }, // getWeatherAlert()가 반환하는 class (heat-warning 등)
+  alertClass: { type: String, required: true },
   label: { type: String, required: true },
   small: { type: Boolean, default: false },
 })

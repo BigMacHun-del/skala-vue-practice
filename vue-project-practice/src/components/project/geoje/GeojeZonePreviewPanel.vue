@@ -1,11 +1,8 @@
 <script setup>
 import GlassCard from './GlassCard.vue'
 
-// 지도 오른쪽에 놓이는 "구역 목록" 패널. 예전엔 마우스 오버한 구역 하나만 보여줬는데,
-// 이제 8개 구역 정보(실시간 날씨 + 명소 소개)를 전부 나열하고 카드 안에서만 스크롤되게 바꿨다.
-// weatherByZone: GeojeHomeView.vue가 onMounted에서 구역별로 미리 불러온 날씨 캐시를 그대로 내려받는다 -
-// { [zoneId]: { status: 'loading'|'loaded'|'error', data } }, data는 useWeatherApi.fetchCityCurrent() 결과.
-// activeZoneId: 지도 핀에 마우스를 올렸을 때 해당 항목을 하이라이트하기 위한 값(선택 사항).
+// 지도 오른쪽에 놓이는 구역 목록 패널. 각 구역의 실시간 날씨 + 명소 소개를 나열한다.
+// weatherByZone: { [zoneId]: { status, data } } - GeojeHomeView.vue가 미리 불러온 날씨 캐시
 defineProps({
   zones: { type: Array, required: true },
   weatherByZone: { type: Object, default: () => ({}) },

@@ -1,19 +1,17 @@
 <script setup>
-// 지도 위에 실제 한반도 SVG + 도시 핀 + (비/눈이 오는 도시엔) 파티클 애니메이션을 얹는다.
-// props: 도시 목록/선택 상태/지도 경로 데이터를 부모에게서 받기만 함 (이 컴포넌트는 상태를 안 가짐)
+// 한반도 SVG + 도시 핀 + (비/눈 오는 도시엔) 파티클 애니메이션을 얹는다. 상태는 안 가지고 props만 받음.
 defineProps({
   cityList: { type: Array, required: true },
   selectedCityId: { type: String, default: null },
   provincePaths: { type: Array, required: true },
   legendItems: { type: Array, required: true },
-  // 검색 중일 때만 Set이 내려오고, 그 안에 없는 도시 핀은 옅게 표시한다 (검색 결과 강조)
+  // 검색 중일 때만 내려오는 Set - 여기 없는 도시 핀은 옅게 표시
   highlightIds: { type: Set, default: null },
 })
 
-// emits: 핀 클릭 시 selectedCityId를 직접 바꾸지 않고 부모에게 "이 도시 골랐어요" 알림만 보냄
 defineEmits(['select-city'])
 
-// 파티클 5개를 v-for로 찍기 위한 더미 배열 (Vue의 <slot>과는 무관, 그냥 반복 횟수용 배열)
+// 파티클 5개를 v-for로 찍기 위한 반복 횟수용 배열
 const PARTICLE_SLOTS = [0, 1, 2, 3, 4]
 </script>
 
@@ -39,7 +37,6 @@ const PARTICLE_SLOTS = [0, 1, 2, 3, 4]
       :style="{ left: city.x + '%', top: city.y + '%' }"
       @click="$emit('select-city', city.id)"
     >
-      <!-- 비/눈이 오는 도시는 핀 위에 작은 파티클 효과를 얹는다 -->
       <span v-if="city.isRain || city.isSnow" class="particles" :class="city.isSnow ? 'snow' : 'rain'">
         <span v-for="slot in PARTICLE_SLOTS" :key="slot" class="particle" :style="{ left: slot * 5 + 2 + 'px', animationDelay: slot * 0.18 + 's' }"></span>
       </span>

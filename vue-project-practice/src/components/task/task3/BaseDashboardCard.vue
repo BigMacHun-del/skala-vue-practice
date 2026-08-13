@@ -1,6 +1,5 @@
 <script setup>
-// 지도/노래 추천/도시 목록 섹션이 공통으로 쓰는 카드 껍데기.
-// 실제 내용은 부모(WeatherComposition)가 <slot>으로 자유롭게 주입한다.
+// 여러 섹션이 공통으로 쓰는 카드 껍데기. 실제 내용은 부모가 slot으로 주입한다.
 defineProps({
   sectionId: { type: String, default: '' },
   title: { type: String, required: true },

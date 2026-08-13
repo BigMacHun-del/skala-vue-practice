@@ -1,8 +1,7 @@
 <script setup>
 import { useConfigStore } from '@/stores/configStore'
 
-// props/emits 없이 Pinia 스토어에 바로 접근한다 - 이게 props down/events up 대비 스토어를 쓰는 이유.
-// AppHeader.vue든 CityDetailView.vue든, 어디에 갖다 둬도 부모를 거치지 않고 같은 상태를 보고 바꿀 수 있다.
+// props/emits 없이 Pinia 스토어에 바로 접근 - 어디에 둬도 부모 없이 같은 상태를 공유한다
 const configStore = useConfigStore()
 </script>
 

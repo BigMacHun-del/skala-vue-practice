@@ -2,21 +2,17 @@
 import { computed } from 'vue'
 import { useConfigStore } from '@/stores/configStore'
 
-// props: 카드 1개 분량의 도시 정보만 받아서 표시 (v-for로 여러 번 재사용됨)
 const props = defineProps({
   city: { type: Object, required: true },
   active: { type: Boolean, default: false },
   isFavorite: { type: Boolean, default: false },
 })
 
-// emits: 카드 클릭(select)·별표 클릭(toggle-favorite) 둘 다 상태 변경은 부모가 담당
 defineEmits(['select', 'toggle-favorite'])
 
-// 단위 변환은 스토어(configStore)를 보는 컴포넌트마다 각자 계산한다 (컴포저블로 공유하지 않는 이유는
-// 요구사항에서 일부러 범위를 좁혀둔 부분 - CityDetailView.vue/FavoriteCities.vue에도 같은 모양의 코드가 있다)
 const configStore = useConfigStore()
 const displayTemp = computed(() => {
-  const rawTemp = props.city.temp // 원본 데이터는 항상 섭씨 숫자
+  const rawTemp = props.city.temp // 원본 데이터는 항상 섭씨
   if (configStore.unit === 'fahrenheit') {
     return Math.round((rawTemp * 9) / 5 + 32)
   }

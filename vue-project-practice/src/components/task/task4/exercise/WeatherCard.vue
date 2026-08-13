@@ -1,16 +1,12 @@
 <script setup>
 import AlertBadge from '../../task3/AlertBadge.vue'
 
-// props down / emits up: 이 컴포넌트는 city 데이터를 받아 보여주기만 하고,
-// 실제 라우팅(router.push)은 부모 View가 담당한다 (컴포넌트는 라우터를 몰라도 됨 → 재사용성 증가).
+// 라우팅(router.push)은 부모 View가 담당하고, 이 컴포넌트는 city.id만 emit한다
 defineProps({
   city: { type: Object, required: true },
   active: { type: Boolean, default: false },
 })
 
-// select: 카드를 눌러 지도/추천곡과 연동되는 "선택" 이벤트
-// view-detail: "상세보기" 버튼 전용 이벤트. 예전 방식이라면 여기서 window.alert(city.name)을 띄웠겠지만,
-// 그 대신 city.id만 부모에게 emit해서 부모가 router.push(`/weather/${id}`)로 Programmatic Navigation 하게 한다.
 defineEmits(['select', 'view-detail'])
 </script>
 

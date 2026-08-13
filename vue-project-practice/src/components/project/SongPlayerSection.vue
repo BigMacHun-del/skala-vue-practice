@@ -1,7 +1,5 @@
 <script setup>
-// 정확한 유튜브 영상 ID를 하드코딩하면 틀린 영상이 연결될 위험이 있어서,
-// 대신 "제목 + 아티스트"로 유튜브 검색 결과를 새 탭에 열어주는 방식으로 미리듣기를 구현한다.
-// props: 선택된 도시/추천곡 데이터만 전달받음 (emits 없음 - 이 컴포넌트는 부모 상태를 안 바꿈)
+// 유튜브 영상 ID 대신 "제목 + 아티스트" 검색 결과를 새 탭에 열어주는 방식으로 미리듣기 구현
 defineProps({
   city: { type: Object, required: true },
   song: { type: Object, required: true },

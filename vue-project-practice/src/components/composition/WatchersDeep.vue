@@ -9,10 +9,7 @@ const user = ref({
 const logDeep = ref('아직 반응 없음')
 const logTarget = ref('아직 반응 없음')
 
-// 실패하는 예시 (가장 많이 범하는 오류)
-// watch(user, () => { console.log('이 로그는 영원히 안 찍힙니다.') })
-
-// 해결책 1: deep 옵션을 켜서 객체 하위 속성 전체 감시하기
+// user를 그냥 넘기면 반응하지 않으므로 deep 옵션 필요
 watch(
   user,
   (newVal) => {
@@ -21,7 +18,7 @@ watch(
   { deep: true },
 )
 
-// 해결책 2: 화살표 함수로 특정 속성(age)만 콕 집어 감시하기 (★이전 값 추적 가능!)
+// 특정 속성만 추출해 감시하면 이전 값도 추적 가능
 watch(
   () => user.value.age,
   (newAge, oldAge) => {

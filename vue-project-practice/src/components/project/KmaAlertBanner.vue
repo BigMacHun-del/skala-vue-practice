@@ -2,8 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { fetchKmaBulletins, deriveActiveAlerts } from '@/composables/useKmaAlerts'
 
-// 기상청 공공데이터포털 특보 API는 도시별이 아니라 전국 단위 발표/해제 이력만 줘서, 도시 카드
-// 배지(기온 기준 하드코딩)는 그대로 두고 "지금 전국에 떠 있는 실제 특보"를 이 배너 하나로 보여준다.
+// 기상청 특보 API는 전국 단위 발표/해제 이력을 주기 때문에, 지금 떠 있는 특보를 배너로 보여준다
 const status = ref('loading') // 'loading' | 'loaded' | 'error'
 const alerts = ref([])
 

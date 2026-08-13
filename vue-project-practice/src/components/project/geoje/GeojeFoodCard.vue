@@ -1,7 +1,6 @@
 <script setup>
 import GlassCard from './GlassCard.vue'
 
-// props: 이 구역의 추천 음식 배열만 받아서 나열한다 (v-for)
 defineProps({
   food: { type: Array, required: true }, // [{ name, desc }]
 })

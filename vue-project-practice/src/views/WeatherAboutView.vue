@@ -1,5 +1,5 @@
 <script setup>
-// 정적인 소개 페이지. 상태나 props 없이 텍스트 + 뒤로가기 링크만 있으면 되는 가장 단순한 View.
+// 정적 소개 페이지 - 상태 없이 텍스트 + 뒤로가기 링크만 있는 View
 </script>
 
 <template>

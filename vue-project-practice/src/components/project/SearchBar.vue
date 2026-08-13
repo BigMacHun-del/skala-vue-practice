@@ -1,22 +1,16 @@
 <script setup>
-// props: 검색어(query)와 그 검색어로 걸러진 도시 목록(suggestions)을 부모(WeatherMusicApp)에게서 받는다.
-// query를 여기서 직접 바꾸지 않고 update:query를 emit하는 이유 = Vue의 v-model 규칙
-// (practice/ModelBasic.vue에서 :value + @input으로 풀어 썼던 것을, defineProps/defineEmits로 컴포넌트화한 버전)
+// query는 직접 바꾸지 않고 update:query를 emit해서 부모가 v-model:query로 받게 한다
 defineProps({
   query: { type: String, required: true },
   suggestions: { type: Array, required: true },
 })
 
-// emits:
-//  - update:query → 부모가 v-model:query="searchQuery"로 받을 수 있게 하는 이벤트 이름 규칙
-//  - select-city  → 추천 목록 클릭 시 "이 도시 선택했어요"를 부모에게 알림
 defineEmits(['update:query', 'select-city'])
 </script>
 
 <template>
   <div class="search-bar">
     <span class="search-icon">🔍</span>
-    <!-- practice/ModelBasic.vue와 동일한 :value + @input 패턴. 다만 로컬 변수 대신 emit으로 부모 상태를 바꾼다 -->
     <input
       class="search-input"
       type="text"
@@ -26,7 +20,6 @@ defineEmits(['update:query', 'select-city'])
     />
     <button v-if="query" class="clear-btn" type="button" @click="$emit('update:query', '')">✕</button>
 
-    <!-- v-if / v-else로 검색 상태에 따라 다른 화면을 보여줌 (practice/VueIf.vue) -->
     <ul v-if="query && suggestions.length > 0" class="suggestion-list">
       <li v-for="city in suggestions" :key="city.id" class="suggestion-item" @click="$emit('select-city', city.id)">
         <span class="suggestion-icon">{{ city.weatherIcon }}</span>

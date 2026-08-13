@@ -1,7 +1,5 @@
 <script setup>
-// 실제 한반도 SVG 위에 도시 핀을 찍어 보여주는 지도 패널.
-// 상태(cityList, selectedCityId)는 부모가 갖고 있고, 이 컴포넌트는 props로 받아서 그리기만 한다.
-// 사용자가 핀을 클릭하면 직접 상태를 바꾸지 않고 select-city 이벤트로 부모에게 알린다.
+// 한반도 SVG 위에 도시 핀을 찍는 지도 패널. 상태는 부모가 갖고 있고 props로만 받아 그린다.
 defineProps({
   cityList: { type: Array, required: true },
   selectedCityId: { type: String, default: null },
@@ -14,7 +12,6 @@ defineEmits(['select-city'])
 
 <template>
   <div class="map-frame">
-    <!-- southKoreaHigh.svg에서 파싱한 실제 시/도 경계를 그대로 렌더링 -->
     <svg class="korea-svg" viewBox="79.59 -2 800.82 964" preserveAspectRatio="xMidYMid meet">
       <defs>
         <linearGradient id="landGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -27,7 +24,6 @@ defineEmits(['select-city'])
       <path v-for="province in provincePaths" :key="province.id" :d="province.d" class="province-path" />
     </svg>
 
-    <!-- v-for + :key로 도시별 핀을 반복 렌더링, :style로 지도 위 좌표를 동적으로 지정 -->
     <button
       v-for="city in cityList"
       :key="city.id"
@@ -49,7 +45,6 @@ defineEmits(['select-city'])
 </template>
 
 <style scoped>
-/* 지도: 야간 위성사진 느낌 (southKoreaHigh.svg의 실제 viewBox 비율과 동일하게 맞춤) */
 .map-frame {
   position: relative;
   width: 100%;
@@ -61,7 +56,6 @@ defineEmits(['select-city'])
   box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.55);
 }
 
-/* 위성사진 특유의 옅은 스캔라인 질감 */
 .map-frame::before {
   content: '';
   position: absolute;
@@ -78,7 +72,6 @@ defineEmits(['select-city'])
   display: block;
 }
 
-/* southKoreaHigh.svg에서 파싱한 실제 시/도 경계 도형 (위성사진 질감의 그라디언트 채움) */
 .province-path {
   fill: url(#landGradient);
   stroke: rgba(88, 166, 255, 0.2);
@@ -121,7 +114,6 @@ defineEmits(['select-city'])
   white-space: nowrap;
 }
 
-/* 등급별 색상 (범례 점에 사용하는 기본값) - 야간 위성사진의 도시 불빛처럼 은은하게 발광 */
 .legend-dot.heat-warning {
   background: #f85149;
 }
@@ -144,7 +136,6 @@ defineEmits(['select-city'])
   background: #a371f7;
 }
 
-/* 등급별 색상 (지도 핀에 사용) - 은은한 발광으로 야간 위성사진의 도시 불빛 표현 */
 .pin-dot.heat-warning {
   background: #f85149;
   box-shadow: 0 0 8px 1px rgba(248, 81, 73, 0.8);

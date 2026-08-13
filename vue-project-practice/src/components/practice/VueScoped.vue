@@ -1,5 +1,4 @@
 <script setup>
-// 자바스크립트 방은 깨끗하게 비워둡니다.
 </script>
 
 <template>
@@ -11,7 +10,6 @@
 </template>
 
 <style scoped>
-/* 내 방 전용 타이틀 디자인 */
 .title {
   color: #ff7675;
   font-weight: bold;

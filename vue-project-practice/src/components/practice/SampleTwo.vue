@@ -1,6 +1,4 @@
 <script setup>
-//import { ref } from 'vue'
-
 const welcomeMessage = 'Welcome to Skala-Vue'
 </script>
 
@@ -9,5 +7,5 @@ const welcomeMessage = 'Welcome to Skala-Vue'
     <h2>{{ welcomeMessage }}</h2>
     <p>{{ welcomeMessage.toUpperCase() }}</p>
     <p>{{ 'Random number: ' + Math.round(Math.random() * 100) }}</p>
-  </div>                  <!-- round로 반올림 -->
+  </div>
 </template>

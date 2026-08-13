@@ -3,17 +3,13 @@ import { ref, watch } from 'vue'
 import { useConfigStore } from '@/stores/configStore'
 
 // 즐겨찾기한 도시 목록 + 브라우저 알림(Notification API) 연동
-// props: 즐겨찾기 도시 배열은 부모(WeatherMusicApp)가 관리, 여긴 감시하고 보여주기만 함
 const props = defineProps({
-  favoriteCities: { type: Array, required: true }, // 즐겨찾기된 city 객체 배열
+  favoriteCities: { type: Array, required: true },
   selectedCityId: { type: String, default: null },
 })
 
-// emits: 칩 클릭(select)·즐겨찾기 해제(toggle-favorite) 모두 실제 상태 변경은 부모에게 위임
 const emit = defineEmits(['select', 'toggle-favorite'])
 
-// v-for 안에서 도시마다 온도를 찍어야 해서, CityWeatherCard.vue처럼 computed 하나로는 안 되고
-// 인자를 받는 일반 함수로 만든다. configStore.unit이 바뀌면 이 컴포넌트가 다시 렌더링되면서 같이 갱신됨.
 const configStore = useConfigStore()
 const formatTemp = (temp) => {
   const value = configStore.unit === 'fahrenheit' ? Math.round((temp * 9) / 5 + 32) : Math.round(temp)
@@ -23,7 +19,7 @@ const formatTemp = (temp) => {
 const WARNING_CLASSES = new Set(['heat-warning', 'cold-warning', 'rain-warning', 'other-warning'])
 
 const notifyPermission = ref(typeof Notification !== 'undefined' ? Notification.permission : 'unsupported')
-const alreadyNotified = new Set() // "도시id:등급class" 형태로 중복 알림 방지
+const alreadyNotified = new Set() // 도시id:등급class 형태로 중복 알림 방지
 
 const requestNotification = async () => {
   if (typeof Notification === 'undefined') return
@@ -47,9 +43,7 @@ const notifyIfWarning = (city) => {
   }
 }
 
-// watch: 감시 대상을 "도시id:등급" 문자열 배열로 만들어 넘김 → 등급이 실제로 바뀔 때만 콜백 실행
-// immediate: true라서 컴포넌트가 처음 뜰 때도 한 번 바로 검사한다 (watchEffect와 비슷하게 동작)
-// 즐겨찾기 목록(의 날씨 등급)이 바뀔 때마다 경보 등급이면 알림을 띄운다
+// 즐겨찾기 도시의 날씨 등급이 바뀔 때마다 경보 등급이면 알림 (immediate로 처음 뜰 때도 검사)
 watch(
   () => props.favoriteCities.map((c) => `${c.id}:${c.alert.class}:${c.rainAlert?.class ?? ''}`),
   () => {

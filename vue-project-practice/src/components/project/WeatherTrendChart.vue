@@ -1,15 +1,12 @@
 <script setup>
 import { computed } from 'vue'
 
-// Chart.js 등 새 라이브러리를 추가하지 않고, 순수 SVG로 직접 그린 7일 기온 추이 차트
-// props: 그릴 데이터(daily)를 받아서 좌표만 계산 (차트 자체엔 상태가 없음)
+// 별도 차트 라이브러리 없이 순수 SVG로 그린 기온 추이 차트
 const props = defineProps({
   cityName: { type: String, required: true },
   daily: { type: Array, required: true }, // [{ date, max, min, precipitationSum }, ...]
 })
 
-// 컨테이너 너비(대략 800px 안팎)에 가깝게 잡아야 preserveAspectRatio가 실제 카드 비율과 맞아서
-// 막대/점이 가로로 눌려 늘어나는 왜곡 없이 그려진다.
 const CHART = { width: 800, height: 200, padLeft: 30, padRight: 30, padTop: 24, padBottom: 40 }
 const plotWidth = CHART.width - CHART.padLeft - CHART.padRight
 const plotHeight = CHART.height - CHART.padTop - CHART.padBottom
@@ -34,7 +31,7 @@ const yForTemp = (temp) => {
 const maxLinePoints = computed(() => props.daily.map((d, i) => `${xForIndex(i, props.daily.length)},${yForTemp(d.max)}`).join(' '))
 const minLinePoints = computed(() => props.daily.map((d, i) => `${xForIndex(i, props.daily.length)},${yForTemp(d.min)}`).join(' '))
 
-// 강수량 막대: 하루 강수량을 차트 하단의 얕은 막대로 표시 (배경 참고용)
+// 강수량은 차트 하단의 얕은 막대로 표시
 const maxPrecip = computed(() => Math.max(...props.daily.map((d) => d.precipitationSum ?? 0), 1))
 const precipBarHeight = 34
 const precipBarWidth = 28

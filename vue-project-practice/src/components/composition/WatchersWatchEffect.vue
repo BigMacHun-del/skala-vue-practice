@@ -5,12 +5,9 @@ const username = ref('홍길동')
 const age = ref(20)
 const logMessage = ref('대기 중...')
 
-// watchEffect 가동: 감시 대상을 지정하는 파라미터가 없습니다!
+// watchEffect는 감시 대상을 따로 지정하지 않아도 콜백 안에서 읽은 반응형 값을 자동으로 추적함
 watchEffect(() => {
-  // Vue가 이 내부 코드를 읽고 'username'과 'age'를 자동으로 감시 리스트에 등록합니다.
   logMessage.value = `[자동 감지] 이름: ${username.value} / 나이: ${age.value}세`
-
-  // 화면이 처음 켜질 때 1등으로 즉시 실행되는 증거를 콘솔에서 확인합니다.
   console.log('🤖 watchEffect가 내부 변수 변경을 감지하여 실행되었습니다.')
 })
 </script>

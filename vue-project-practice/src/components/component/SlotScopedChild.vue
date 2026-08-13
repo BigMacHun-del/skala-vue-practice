@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue'
 
-// 하위 컴포넌트 내부에서 관리하는 2개의 서로 다른 기본형 데이터
 const message = ref('현재 서버 상태 정상')
 const userCount = ref(150)
 </script>

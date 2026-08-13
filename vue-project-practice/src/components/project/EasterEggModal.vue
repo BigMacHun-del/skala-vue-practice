@@ -2,35 +2,29 @@
 import { onMounted, onUnmounted } from 'vue'
 import geojeYahoSound from '@/assets/sounds/geoje-yaho.mp3'
 
-// 거제를 5번 연속 클릭하면 나타나는 이스터에그 모달.
-// props: 부모가 만들어둔 히든 트랙 데이터만 받아서 보여줌 (emits: close)
+// 거제를 5번 연속 클릭하면 나타나는 이스터에그 모달
 defineProps({
   song: { type: Object, required: true },
 })
 
 defineEmits(['close'])
 
-// 색종이 조각 24개를 뿌리기 위한 더미 배열 (WeatherMapSection의 비/눈 파티클과 같은 방식)
+// 색종이 조각 24개를 뿌리기 위한 더미 배열
 const CONFETTI_PIECES = Array.from({ length: 24 }, (_, i) => i)
 const CONFETTI_COLORS = ['#ff7e5f', '#7c5cff', '#4facfe', '#ffc65a', '#4ade80', '#f5576c']
 
-// SongPlayerSection.vue와 동일하게, 유튜브 영상 ID를 하드코딩하지 않고 검색 결과를 새 탭으로 연다
 const openPreview = (track) => {
   const query = encodeURIComponent(`${track.title} ${track.artist}`)
   window.open(`https://www.youtube.com/results?search_query=${query}`, '_blank', 'noopener')
 }
 
-// component/LifecycleChild.vue에서 배운 onMounted/onUnmounted.
-// 이 모달은 v-if로 매번 새로 생성되므로, 뜰 때마다 onMounted가 실행되어 "1회 재생"이 자연스럽게 보장된다.
+// v-if로 매번 새로 생성되므로 뜰 때마다 onMounted가 실행되어 1회 재생이 보장됨
 let audio = null
 onMounted(() => {
   audio = new Audio(geojeYahoSound)
-  audio.play().catch(() => {
-    // 브라우저 자동재생 정책으로 막힐 수도 있음 (사용자가 클릭해서 연 것이므로 대부분 허용되지만 대비)
-  })
+  audio.play().catch(() => {})
 })
 
-// 모달을 일찍 닫아도(onUnmounted) 소리가 뒤에서 계속 나지 않도록 정지
 onUnmounted(() => {
   audio?.pause()
 })

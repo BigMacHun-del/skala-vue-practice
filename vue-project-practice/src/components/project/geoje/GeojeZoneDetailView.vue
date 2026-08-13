@@ -9,13 +9,9 @@ import GeojeFishingCard from './GeojeFishingCard.vue'
 
 // /geoje/:zoneId 라우트. 지도에서 구역 핀을 클릭하면 여기로 온다.
 const route = useRoute()
-
-// computed: route.params.zoneId가 바뀔 때마다(=다른 구역 핀을 다시 클릭할 때마다) 자동으로 다시 찾는다.
 const zone = computed(() => GEOJE_ZONES.find((z) => z.id === route.params.zoneId) ?? null)
 
-// 요구사항 4번: "페이지가 바뀔 때 그 구역의 관광명소 배경이미지로 바뀌게" - zone.heroImage에 실제 사진이
-// 들어있으면 그 사진을, 아직 없으면(지금은 전부 null) 구역별 accentColor로 만든 그라디언트를 대신 깐다.
-// 나중에 구역별 사진을 assets에 추가하고 heroImage 경로만 채우면 자동으로 사진 배경으로 바뀐다.
+// heroImage가 있으면 그 사진을, 없으면 accentColor로 만든 그라디언트를 배경으로 쓴다
 const backgroundStyle = computed(() => {
   if (!zone.value) return { background: '#1c1c1e' }
   if (zone.value.heroImage) {
@@ -40,13 +36,11 @@ const backgroundStyle = computed(() => {
           <h1 class="zone-title">{{ zone.name }}</h1>
         </header>
 
-        <!-- 카드 순서: 명소 및 놀거리 정보 → 추천 음식 → 낚시 팁 및 생선 정보 -->
         <GeojeAttractionsCard :attractions="zone.attractions" />
         <GeojeFoodCard :food="zone.food" />
         <GeojeFishingCard :fishing="zone.fishing" />
       </template>
 
-      <!-- v-else: 잘못된 zoneId로 들어왔을 때 -->
       <GlassCard v-else title="구역을 찾을 수 없어요">
         <p class="not-found-desc">"{{ route.params.zoneId }}"에 해당하는 구역이 없어요.</p>
       </GlassCard>

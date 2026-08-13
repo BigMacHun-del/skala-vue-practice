@@ -1,25 +1,15 @@
 <script setup>
 import islandMapImage from '@/assets/geoje/geoje-island-map-clean.png'
 
-// 거제 실제 행정구역 윤곽 이미지(사용자가 올려준 지도 사진) 위에 구역 핀을 얹는 컴포넌트.
-// geoje-island-map-clean.png는 원본 사진(geoje-island-map.png)에서 흰 배경/주변 회색 육지(통영 등
-// 거제가 아닌 지역)와 제목·워터마크 텍스트를 Python(PIL)으로 제거하고 거제 윤곽선만 남겨
-// 투명 배경 PNG로 만든 것 - "지도 배경 없이 거제만 보이게" 요청으로 다시 만들었다.
-// (밝기 임계값으로 흰/회색 배경을 지우고, 연결된 선 덩어리 중 거제 영역 밖에 있는 것들
-//  - 제목 글자, 워터마크, 남은 잡티 - 은 좌표 범위로 걸러냈다.)
-// ⚠️ 이 이미지는 SVG 벡터가 아니라 사진(래스터)이라 내부 경계선 각각을 클릭 가능한 도형으로
-// 인식시킬 수는 없다. 그래서 WeatherMapSection.vue와 똑같은 방식으로, 사진 위에 좌표(%)로
-// 위치를 잡은 핀 버튼을 얹어서 "그 근처를 클릭하면 그 구역으로 이동"하게 만들었다.
-// zone.x/zone.y(geojeZones.js)는 이 새 크롭 이미지 기준으로 다시 계산한 값이라, 원본 이미지를
-// 또 바꾸게 되면 geojeZones.js 상단 주석의 계산식도 같이 맞춰야 한다.
+// 거제 지도 이미지(투명 배경 PNG) 위에 구역 핀을 좌표(%)로 얹는 컴포넌트.
+// 래스터 이미지라 내부 경계선을 도형으로 인식시킬 수 없어, WeatherMapSection.vue와 같은 방식으로
+// 사진 위에 클릭 가능한 핀 버튼을 배치했다. zone.x/zone.y는 이 이미지 기준 좌표(geojeZones.js).
 defineProps({
   zones: { type: Array, required: true },
   activeZoneId: { type: String, default: null },
 })
 
-// select-zone: 클릭 시 상세 페이지로 이동(기존 그대로).
-// preview-zone: 마우스를 올리거나(mouseenter) 키보드로 포커스했을 때(focus) 올려보내서,
-// 부모(GeojeHomeView.vue)가 오른쪽 미리보기 패널에 그 구역 정보 + 실시간 날씨를 띄우게 한다.
+// select-zone: 클릭 시 상세 페이지로 이동, preview-zone: 호버/포커스 시 미리보기 패널에 표시
 defineEmits(['select-zone', 'preview-zone'])
 </script>
 
@@ -27,8 +17,6 @@ defineEmits(['select-zone', 'preview-zone'])
   <div class="geoje-map-frame">
     <img :src="islandMapImage" alt="거제 지도" class="geoje-map-image" />
 
-    <!-- v-for + :key로 구역 핀을 반복 렌더링. 클릭은 select-zone(상세 페이지 이동),
-         마우스 오버/포커스는 preview-zone(오른쪽 패널 미리보기)으로 서로 다른 이벤트를 올려보낸다. -->
     <button
       v-for="zone in zones"
       :key="zone.id"
